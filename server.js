@@ -7,7 +7,9 @@ var express = require('express'),
 // tell app to use bodyParser middleware
 app.use(bodyParser.urlencoded({extended: true}));
 //connecting the css/js to the server.js
-app.use(express.static(__dirname + '/public/styles/styles.css'));
+app.use(express.static(__dirname + '/public/styles'));
+app.use(express.static(__dirname + '/public/scripts'));
+
 // app.use(express.static(__dirname + '/public/scripts/script.js'));
 
 app.use(bodyParser.json()) 

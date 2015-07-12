@@ -10,32 +10,70 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + '/public/styles'));
 app.use(express.static(__dirname + '/public/scripts'));
 
-// app.use(express.static(__dirname + '/public/scripts/script.js'));
-
 app.use(bodyParser.json()) 
 
-//set up root route to respond with 'hello world'
-// app.get('/', function (req, res) {
-//   res.send('hello world');
-// });
-
-var users = [
-  {
-    name: 'Bob',
-    username: 'bobiscool'
-  },
-  {
-    name: 'Julie',
-    username: 'julierocks'
-  }
-];
+var posts = [
+ {id: 1, title: "madrid, spain", description: "this restaurant was amazing! great vegetarian choices."},
+ {id:2, title: "lisbon, portugal", description: "great meal to start off our foodventures! never knew what sweet potatoes could be!"},
+ {id: 3, title: "florence, italy", description: "lovedd risotto! can't find it anywhere but italy!"}
+ ];
 
 app.get('/', function(req, res) {
   res.sendFile(__dirname + '/public/views/index.html');
 });
 
-app.get('/users', function(req, res) {
-  res.json(users);
+app.get('/api/foodblog', function(req, res) {
+  res.json(posts);
+});
+
+app.post('/api/foodblog', function (req, res) {
+  var newPost = req.body;
+  
+    if (posts.length > 0) {
+    newPost.id = posts[posts.length - 1].id +  1;
+  } else {
+    newPost.id = 0;
+  }
+
+  // add newPost to `post` array
+  posts.push(newPost);
+  
+  // send newPost as JSON response
+  res.json(newPost);
+});
+
+// update post
+app.put('/api/foodblog/:id', function(req, res) {
+
+  var postId = parseInt(req.params.id);
+
+  var targetPost = _.findWhere(posts, {id: targetId});
+
+  // update the phrase's word
+  targetPost.title = req.body.title;
+
+  // update the phrase's definition
+  targetPost.description = req.body.description;
+
+  // send back edited object
+  res.json(targetId);
+});
+
+// delete post
+app.delete('/api/foodblog/:id', function(req, res) {
+  
+  var postId = parseInt(req.params.id);
+
+  var targetPost = _.findWhere(posts, {id: targetId});
+
+  // get the index of the found post
+  var index = posts.indexOf(targetPost);
+  
+  // remove the item at that index, only remove 1 item
+  phrases.splice(index, 1);
+  
+  // send back deleted object
+  res.json(targetPost);
 });
 
 // listen on port 3000

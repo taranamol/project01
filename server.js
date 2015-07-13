@@ -10,7 +10,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + '/public/styles'));
 app.use(express.static(__dirname + '/public/scripts'));
 
-app.use(bodyParser.json()) 
+app.use(bodyParser.json())
 
 var posts = [
  {id: 1, title: "madrid, spain", description: "this restaurant was amazing! great vegetarian choices."},
@@ -22,11 +22,11 @@ app.get('/', function(req, res) {
   res.sendFile(__dirname + '/public/views/index.html');
 });
 
-app.get('/api/foodblog', function(req, res) {
+app.get('/api/posts', function(req, res) {
   res.json(posts);
 });
 
-app.post('/api/foodblog', function (req, res) {
+app.post('/api/posts', function (req, res) {
   var newPost = req.body;
   
     if (posts.length > 0) {
@@ -43,34 +43,32 @@ app.post('/api/foodblog', function (req, res) {
 });
 
 // update post
-app.put('/api/foodblog/:id', function(req, res) {
+app.put('/api/posts/:id', function(req, res) {
 
   var postId = parseInt(req.params.id);
 
-  var targetPost = _.findWhere(posts, {id: targetId});
+  var targetPost = _.findWhere(posts, {id: postId});
 
-  // update the phrase's word
   targetPost.title = req.body.title;
 
-  // update the phrase's definition
   targetPost.description = req.body.description;
 
   // send back edited object
-  res.json(targetId);
+  res.json(targetPost);
 });
 
 // delete post
-app.delete('/api/foodblog/:id', function(req, res) {
+app.delete('/api/posts/:id', function(req, res) {
   
   var postId = parseInt(req.params.id);
 
-  var targetPost = _.findWhere(posts, {id: targetId});
+  var targetPost = _.findWhere(posts, {id: postId});
 
   // get the index of the found post
   var index = posts.indexOf(targetPost);
   
   // remove the item at that index, only remove 1 item
-  phrases.splice(index, 1);
+  posts.splice(index, 1);
   
   // send back deleted object
   res.json(targetPost);

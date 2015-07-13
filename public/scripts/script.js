@@ -21,7 +21,7 @@ $(function() {
     create: function(newTitle, newDescription) {
       var postData = {title: newTitle, description: newDescription};
     //request to server to create a new post
-    $.post('/api/phrases', postData, function(data) {
+    $.post('/api/posts', postData, function(data) {
       //passing it through template to show on the page
       var $postHtml = $(postsController.template(data));
       $('#listOfPosts').append($postHtml);
